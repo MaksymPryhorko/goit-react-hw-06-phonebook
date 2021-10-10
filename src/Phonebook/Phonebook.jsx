@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { useEffect } from "react";
 import Form from "./Form";
 import PropTypes from "prop-types";
 import ContactList from "./ContactList";
@@ -7,23 +6,7 @@ import Filter from "./Filter";
 import style from "./Phonebook.module.css";
 import contactsActions from "../redux/contacts-actions";
 
-function Phonebook({ items, sendContactsToStateOfLocalStorage }) {
-  const contactsOfLocStor = JSON.parse(window.localStorage.getItem("contacts"));
-
-  useEffect(() => {
-    if (contactsOfLocStor.length === 0) {
-      return;
-    }
-    sendContactsToStateOfLocalStorage(contactsOfLocStor);
-  }, []);
-
-  useEffect(() => {
-    if (contactsOfLocStor.length === items.length) {
-      return;
-    }
-    localStorage.setItem("contacts", JSON.stringify(items));
-  }, [items]);
-
+function Phonebook({ items, loadContactsOfLocStor }) {
   return (
     <section className={style.mainSection}>
       <h1>Phonebook</h1>
@@ -40,13 +23,13 @@ function Phonebook({ items, sendContactsToStateOfLocalStorage }) {
 
 Phonebook.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
-  sendContactsToStateOfLocalStorage: PropTypes.func.isRequired,
+  loadContactsOfLocStor: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ items: state.contacts.items });
 
 const mapDispatchToProps = (dispatch) => ({
-  sendContactsToStateOfLocalStorage: (item) =>
+  loadContactsOfLocStor: (item) =>
     dispatch(contactsActions.firstLoadContact(item)),
 });
 
