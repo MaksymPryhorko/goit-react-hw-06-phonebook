@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import Form from "./Form";
+import PropTypes from "prop-types";
 import ContactList from "./ContactList";
 import Filter from "./Filter";
 import style from "./Phonebook.module.css";
@@ -36,6 +37,11 @@ function Phonebook({ items, sendContactsToStateOfLocalStorage }) {
     </section>
   );
 }
+
+Phonebook.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+  sendContactsToStateOfLocalStorage: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ items: state.contacts.items });
 

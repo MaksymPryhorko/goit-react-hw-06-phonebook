@@ -87,6 +87,7 @@ function Form({ items, onSubmit }) {
 }
 
 Form.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
   onSubmit: PropTypes.func,
 };
 
