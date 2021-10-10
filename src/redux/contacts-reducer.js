@@ -6,10 +6,6 @@ const items = createReducer([], {
   [actionTypes.addContact]: (state, { payload }) => [...state, payload],
   [actionTypes.deleteContact]: (state, { payload }) =>
     state.filter((contact) => contact.id !== payload),
-  [actionTypes.firstLoadContact]: (state, { payload }) => [
-    ...state,
-    ...payload,
-  ],
 });
 
 const filter = createReducer("", {

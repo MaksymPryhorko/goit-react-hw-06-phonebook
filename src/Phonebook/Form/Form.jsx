@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import PropTypes from "prop-types";
 import style from "./Form.module.css";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import contactsActions from "../../redux/contacts-actions";
+import { getItems } from "../Phonebook-selectors";
 
-function Form({ items, onSubmit }) {
+export default function Form() {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+
+  const items = useSelector(getItems);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.currentTarget;
@@ -37,11 +40,13 @@ function Form({ items, onSubmit }) {
       return;
     }
 
-    onSubmit({
-      name,
-      id: uuidv4(),
-      number,
-    });
+    dispatch(
+      contactsActions.addContact({
+        name,
+        id: uuidv4(),
+        number,
+      })
+    );
 
     reset();
   };
@@ -85,16 +90,3 @@ function Form({ items, onSubmit }) {
     </form>
   );
 }
-
-Form.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object),
-  onSubmit: PropTypes.func,
-};
-
-const mapStateToProps = ({ contacts }) => ({ items: contacts.items });
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (item) => dispatch(contactsActions.addContact(item)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
